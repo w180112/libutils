@@ -11,4 +11,4 @@ compiler:
 os:
   - linux
 
-script: make
+script: autoreconf --install && ./configure && make

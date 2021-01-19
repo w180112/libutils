@@ -15,6 +15,11 @@ Type
 
 	# cd libutil
 
+Use GNU build system to generate configure file and makefile
+
+	# autoreconf --install
+	# ./configure
+
 Type make to compile
 
 	# make
