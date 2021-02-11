@@ -38,6 +38,18 @@
 #define BOOT_SRV_PORT 			67 //0x43
 #define BOOT_CLI_PORT 			68 //0x44
 
+#define ICMP_ECHO_REPLY         0x0
+#define ICMP_UNREACHABLE        0x3
+#define ICMP_ECHO_REQUEST       0x8
+
+enum {
+    ICMP_NETWORK_UNREACHABLE = 0,
+    ICMP_HOST_UNREACHABLE = 1,
+    ICMP_PROTOCOL_UNREACHABLE = 2,
+    ICMP_PORT_UNREACHABLE = 3,
+    ICMP_FRAG_NEED_DF_SET = 4,
+}ICMP_UNREACH;
+
 /*----------------------------------------------------------
  * IP packet 
  *---------------------------------------------------------*/

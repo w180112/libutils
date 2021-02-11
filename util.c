@@ -547,13 +547,6 @@ void  PRINT_MESSAGE(unsigned char *msg, int len)
 	printf("\n");
 }
 
-void debug_print_buf(unsigned char *buffer)
-{
-    for(int i=0; i<MSG_BUF; i++)
-        printf("%x ", buffer[i]);
-    printf("\n");
-}
-
 /*----------------------------------------------------
  * OSS_PRINT()
  *---------------------------------------------------*/
