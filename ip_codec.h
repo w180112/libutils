@@ -42,7 +42,7 @@
 #define ICMP_UNREACHABLE        0x3
 #define ICMP_ECHO_REQUEST       0x8
 
-enum {
+typedef enum {
     ICMP_NETWORK_UNREACHABLE = 0,
     ICMP_HOST_UNREACHABLE = 1,
     ICMP_PROTOCOL_UNREACHABLE = 2,
