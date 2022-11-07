@@ -21,7 +21,7 @@ extern "C" { /* in .cpp file, only this line is enough */
 
 #define	IPC_DEF_QID			0
 
-enum {
+typedef enum {
 	IPC_EV_TYPE_DEF,
 	IPC_EV_TYPE_WEB,
 	IPC_EV_TYPE_CLI,
