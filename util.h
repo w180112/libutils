@@ -15,9 +15,10 @@ extern "C" {
  *---------------------------------------------------*/
 #define TTY_PRINT   OSS_PRINT
 
+STATUS  get_local_ip(char *ip_str, char *sif);
+STATUS  set_local_ip(char *ip_str, char *sif);
+
 extern char *GetStrTok(char **cpp, char *delimiters);
-extern int  get_local_ip(U8 *ip, char *sif);
-extern int  set_local_ip(char *ip_str, char *sif);
 
 extern U8	*DECODE_U16(U16 *val, U8 *mp);
 extern U8	*DECODE_U24(U32 *val, U8 *mp);
