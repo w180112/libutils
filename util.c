@@ -289,7 +289,7 @@ U16 CHECK_SUM(U32 sum)
 /*------------------------------------------------------------
  * get_local_mac:
  *-----------------------------------------------------------*/
-int get_local_mac(U8 *mac, char *sif)
+STATUS get_local_mac(U8 *mac, char *sif)
 {
     struct ifreq    sifreq; //socket Interface request
     int                     fd;
@@ -297,17 +297,19 @@ int get_local_mac(U8 *mac, char *sif)
     fd = socket(PF_INET,SOCK_STREAM,0);
     if (fd < 0){
        printf("error! can not open socket for getting mac\n");
-       return -1;
+       return ERROR;
     }
     
     strncpy(sifreq.ifr_name, sif, IF_NAMESIZE-1);
     if (ioctl(fd, SIOCGIFHWADDR, &sifreq) != 0){
         printf("error! ioctl failed when getting mac\n");
         close(fd);
-        return -1;
+        return ERROR;
     }
     memmove((void*)&mac[0], (void*)&sifreq.ifr_ifru.ifru_hwaddr.sa_data[0], 6);
-    return 0;
+    close(fd);
+
+    return SUCCESS;
 }
 
 /*------------------------------------------------------------
@@ -318,27 +320,31 @@ int get_local_mac(U8 *mac, char *sif)
  *     printf("eth0 is up!");
  * }
  *-----------------------------------------------------------*/
-int get_local_ip(U8 *ip_str, char *sif)
+STATUS get_local_ip(char *ip_str, char *sif)
 {
     struct ifreq    ifr; //socket Interface request
     struct in_addr  sin_addr;
     int             fd;
     
-    fd = socket(PF_INET,SOCK_STREAM,0);
+    fd = socket(PF_INET, SOCK_STREAM, 0);
     if (fd < 0){
         printf("error! can not open socket for getting ip\n");
-        return -1;
+        return ERROR;
     }
     
     strncpy(ifr.ifr_name, sif, IF_NAMESIZE-1);    
     if (ioctl(fd, SIOCGIFADDR, &ifr) < 0) {
         perror("ioctl SIOCGIFADDR error");
-        return -1;
+        close(fd);
+        return ERROR;
     }
     
     sin_addr.s_addr = *(U32*)&ifr.ifr_addr.sa_data[2];
-    strcpy((char*)ip_str, inet_ntoa(sin_addr));
-    return 0;
+    char *sin_addr_str = inet_ntoa(sin_addr);
+    strncpy(ip_str, sin_addr_str, strlen(sin_addr_str));
+    close(fd);
+
+    return SUCCESS;
 }
 
 /*------------------------------------------------------------
@@ -349,16 +355,17 @@ int get_local_ip(U8 *ip_str, char *sif)
  *     printf("eth0 is up!");
  * }
  *-----------------------------------------------------------*/
-int set_local_ip(char *ip_str, char *sif) 
+STATUS set_local_ip(char *ip_str, char *sif) 
 { 
     struct ifreq ifr; //socket Interface request 
     struct sockaddr_in addr,mask; 
-    int fd; 
+    int fd;
+    STATUS ret = SUCCESS;
  
     fd = socket(AF_INET,SOCK_STREAM,0); 
     if (fd < 0){ 
         printf("error! can not open socket for getting ip\n"); 
-        return -1; 
+        return ERROR; 
     } 
  
     bzero(&ifr,sizeof(ifr));  
@@ -373,7 +380,8 @@ int set_local_ip(char *ip_str, char *sif)
     memcpy(&ifr.ifr_addr, &addr, sizeof(struct sockaddr)); 
     if (ioctl(fd, SIOCSIFADDR, &ifr) < 0) { 
         perror("ioctl SIOCSIFADDR error"); 
-        return -1; 
+        ret = ERROR;
+        goto end;
     } 
  
     mask.sin_family = AF_INET; 
@@ -381,28 +389,33 @@ int set_local_ip(char *ip_str, char *sif)
     memcpy(&ifr.ifr_addr, &mask, sizeof(struct sockaddr)); 
     if (ioctl(fd, SIOCSIFNETMASK, &ifr) < 0) { 
         perror("ioctl SIOCSIFNETMASK error"); 
-        return -1; 
+        ret = ERROR;
+        goto end; 
     } 
  
     ifr.ifr_flags |= IFF_UP |IFF_RUNNING;  
  
     //get the status of the device  
     if (ioctl(fd, SIOCSIFFLAGS, &ifr) < 0) { 
-        perror("SIOCSIFFLAGS");  
-        return -1;  
+        perror("SIOCSIFFLAGS");
+        ret = ERROR;
+        goto end;
     }  
     if (ifr.ifr_flags & IFF_UP) { 
         printf("%s is up!\n",sif); 
     } 
-    close(fd);  
-    return 0; 
+
+end:
+    close(fd);
+
+    return ret; 
 }
     
 /********************************************************************
  * PRINT_MESSAGE()
  * Note: Print msg as wireshark-like format.
  ********************************************************************/
-void  PRINT_MESSAGE(unsigned char *msg, int len)
+void PRINT_MESSAGE(unsigned char *msg, int len)
 {
 	int  row_cnt,rows,rest_bytes,hex_cnt,ch_cnt,cnt,xi,ci;
 	
