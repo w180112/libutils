@@ -99,6 +99,47 @@ struct UDP_PACKET {
 };
 typedef struct UDP_PACKET  tUDP_PKT;
 
+struct TCP_PACKET {
+    U16     src;
+    U16     dst;
+    U32     seq;
+    U32     ack;
+    union flags_field {
+		U16 flags;
+		struct flag_bits {
+#           if defined(_BIG_ENDIAN)
+			U16	    doff:4;
+		    U16     res1:4;
+		    U16     cwr:1;
+		    U16     ece:1;
+		    U16     urg:1;
+		    U16     ack:1;
+		    U16     psh:1;
+		    U16     rst:1;
+		    U16     syn:1;
+		    U16     fin:1;
+#           else /*_LIT_ENDIAN */
+			U16	    res1:4;
+		    U16     doff:4;
+		    U16     fin:1;
+		    U16     syn:1;
+		    U16     rst:1;
+		    U16     psh:1;
+		    U16     ack:1;
+		    U16     urg:1;
+		    U16     ece:1;
+		    U16     cwr:1;
+#           endif
+		}flag_struct;
+	}flags_union;
+    U16     window;
+    U16     chksum;
+    U16     urg_ptr;
+    U8      opts[0];
+};
+typedef struct TCP_PACKET  tTCP_PKT;
+extern U16 CHKSUM_TCP(tIP_PKT *ip_pkt, tTCP_PKT *tcp_pkt);
+
 extern U16 	CHECK_SUM(U32);
 extern int  DECODE_UDP_PKT(tUDP_PKT *udp_pkt, tIP_PKT *ip_pkt, U16 *data_len);
 extern U8   *ENCODE_UDP_PKT(tIP_PKT *ip_pkt, tUDP_PKT *udp_pkt, U8 *mp);
