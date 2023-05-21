@@ -44,7 +44,7 @@ extern "C" {
 #include	    <sys/param.h>
 #include        <sys/socket.h>
 #include        <netinet/in.h> /* get local ip */ 
-#include	    <net/if.h>     /* get local ip */
+#include	    <linux/if.h>     /* get local ip */
 #include	    <linux/if_packet.h>
 #include 		</usr/include/linux/filter.h>
 //#include 		"../../uClibc-0.9.28/_install/usr/arm-linux-uclibc/usr/include/linux/filter.h"
@@ -57,7 +57,6 @@ extern "C" {
 //#include		"/uClibc-0.9.28/include/pthread.h"
 #include		<pthread.h>
 
-typedef  		unsigned char   	BOOL;
 typedef  		short				STATUS;
 typedef  		int    				(*FUNCPTR)(void);       //return int
 typedef  		unsigned char		(*U8FUNCPTR)(void);     //return U8
@@ -112,7 +111,7 @@ typedef int					tIPC_ID;
 typedef enum {
 	FALSE,
 	TRUE
-} L7_BOOL;
+}tBOOL;
 
 // abi, modified, 20070412
 //typedef unsigned long       U64; /* = ULONG in VxWorks */

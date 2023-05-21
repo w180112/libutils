@@ -23,7 +23,7 @@ struct _TMR_CB {
     void        *ccb;
     tIPC_ID		Que; /* It is a pointer */
     pTMR_CB     next;
-    BOOL     	idle;
+    tBOOL     	idle;
 };
 
 typedef struct _TMR_CBs  tTMR_CBs;
@@ -70,7 +70,7 @@ extern void         OSTMR_FreeTmrCb(pTMR_CB p);
 extern void         OSTMR_StartTmr(tIPC_ID Que, void *ccb, U32 delay, char *name, U16 event);
 extern void         OSTMR_StopTmrs(void *ccb);
 extern void         OSTMR_StopXtmr(void *ccb, U16 event);
-extern BOOL         OSTMR_IsTmrListEmpty(void);
-extern BOOL         OSTMR_IsTmrExist(void *ccb, U16 event);
+extern tBOOL         OSTMR_IsTmrListEmpty(void);
+extern tBOOL         OSTMR_IsTmrExist(void *ccb, U16 event);
 
 #endif /* _OS_TIMER_H_ */
