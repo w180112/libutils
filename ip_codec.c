@@ -393,7 +393,7 @@ U16 CHKSUM_UDP(tIP_PKT *ip_pkt, tUDP_PKT *udp_pkt)
  *----------------------------------------------*/
 U16 CHKSUM_TCP(tIP_PKT *ip_pkt, tTCP_PKT *tcp_pkt)
 {
-    U32  sum=0;
+    U32  sum = 0;
     U8   *ptr;
     U8   *cp;
 
@@ -403,28 +403,31 @@ U16 CHKSUM_TCP(tIP_PKT *ip_pkt, tTCP_PKT *tcp_pkt)
     sum += (U16)(ip_pkt->cDA[0]<<8 | ip_pkt->cDA[1]);
     sum += (U16)(ip_pkt->cDA[2]<<8 | ip_pkt->cDA[3]);
     sum += PROTO_TYPE_TCP; /* ZERO/PROTO */
-    sum += (U16)tcp_pkt->flags_union.flag_struct.doff * 4;  /* TCP LENGTH */
+    /*------ get tcp hdr, tcp options and payload len ------*/
+    U8 tcp_len = ntohs(ip_pkt->total_len) - (ip_pkt->ver_ihl.IHL) * 4;
+    sum += tcp_len;
 
-    U8 tcp_len = (tcp_pkt->flags_union.flag_struct.doff) * 4;
+    /*------ get tcp options and payload len ------*/
     U8 opt_len = tcp_len - sizeof(tTCP_PKT);
     tcp_pkt->chksum = 0x0;
 
-    /*------ compute tcp header+opts ------*/
-    if (opt_len & 0x01){  /* odd len, but checksum is in short base(even) */
+    /*------ align tcp options and payload len to even ------*/
+    if (opt_len & 0x01) {  /* odd len, but checksum is in short base(even) */
         cp = tcp_pkt->opts;
         cp[opt_len] = 0;
         /* while not modify the true len value in tcp hdr */
         tcp_len++;
     }
-    ptr = (U8 *)tcp_pkt;
 
+    /*------ compute tcp header+opts ------*/
+    ptr = (U8 *)tcp_pkt;
     int j = tcp_len >> 1;
-    for(int i=0; i<j; i++){
+    for(int i=0; i<j; i++) {
         sum += (U16)(*ptr<<8 | *(ptr+1));
         ptr += 2;
     }
 
-    return CHECK_SUM(sum);
+    return htons(CHECK_SUM(sum));
 }
 
 /*-----------------------------------------------
