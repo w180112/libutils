@@ -3,6 +3,7 @@
 
 AC_PREREQ([2.69])
 AC_INIT(libutils, 1.0, w180112@gmail.com)
+AC_CONFIG_AUX_DIR([.])
 AM_INIT_AUTOMAKE([foreign -Wall -Werror])
 AC_CONFIG_SRCDIR([common.h])
 AC_CONFIG_HEADERS([config.h])
