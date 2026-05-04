@@ -95,29 +95,27 @@ typedef signed char         BYTE;
 typedef signed char         BIT8;
 typedef short 			    BIT16;
 
-typedef unsigned char       U8;
+typedef uint8_t             U8;
 typedef U8                  u8;
-typedef unsigned short      U16;
+typedef uint16_t      		U16;
 typedef U16                 u16;
 
 /*typedef  U8                 mac_addr_t[6];   */
 #ifdef  UNIX_VERSION
-typedef unsigned int        U24;
-typedef unsigned int        U32;
+
+typedef uint32_t        	U32;
 typedef U32					u32;
 typedef U32                 L7_uint32;
-typedef int                 BIT32;
+typedef int32_t             BIT32;
 typedef int					tIPC_ID;
+typedef uint64_t  			U64;
+typedef U64 				u64;
 
 typedef enum {
 	FALSE,
 	TRUE
 } L7_BOOL;
 
-// abi, modified, 20070412
-//typedef unsigned long       U64; /* = ULONG in VxWorks */
-typedef unsigned long long  U64;
-// abi, end
 #endif
 
 typedef unsigned int	    UINT;	
