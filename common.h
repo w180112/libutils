@@ -90,10 +90,9 @@ typedef  		void   				(*VOIDFUNCPTR)(void);   //return void
 /*******************************************
  * COMMON
  *******************************************/
-typedef unsigned char       BIT;
 typedef signed char         BYTE;
-typedef signed char         BIT8;
-typedef short 			    BIT16;
+typedef signed char         S8;
+typedef short 			    S16;
 
 typedef uint8_t             U8;
 typedef U8                  u8;
@@ -106,10 +105,11 @@ typedef U16                 u16;
 typedef uint32_t        	U32;
 typedef U32					u32;
 typedef U32                 L7_uint32;
-typedef int32_t             BIT32;
+typedef int32_t             S32;
 typedef int					tIPC_ID;
 typedef uint64_t  			U64;
 typedef U64 				u64;
+typedef int64_t				S64;
 
 typedef enum {
 	FALSE,
