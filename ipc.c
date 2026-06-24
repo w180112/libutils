@@ -24,7 +24,7 @@ void 		house_keep();
 void  		PRINT_IPC_TBL(tIPC_TBL *ipc_tbl);
 
 tIPC_ID		ipc_tbl_msgid=-1;	
-BOOL		alarm_flag;
+tBOOL		alarm_flag;
 
 /*-----------------------------------------
  * hk_exit :

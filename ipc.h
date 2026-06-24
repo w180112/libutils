@@ -38,7 +38,7 @@ typedef struct {
 	key_t	key;
 	char	name[80];
 	int		type;
-	BOOL	valid;
+	tBOOL	valid;
 } tIPC_TBL;
 	
 typedef struct {

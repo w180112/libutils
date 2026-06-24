@@ -582,7 +582,7 @@ void OSTMR_StopXtmr(void *ccb, U16 event)
  *           event - timeout event
  * return  : TRUE/FALSE
  **********************************************************************/
-BOOL  OSTMR_IsTmrListEmpty()
+tBOOL  OSTMR_IsTmrListEmpty()
 {
     if (tmrObj.shm->tmrHdr == NULL)
         return TRUE;
@@ -598,7 +598,7 @@ BOOL  OSTMR_IsTmrListEmpty()
  *           event - timeout event
  * return  : TRUE/FALSE
  **********************************************************************/
-BOOL  OSTMR_IsTmrExist(void *ccb, U16 event)
+tBOOL  OSTMR_IsTmrExist(void *ccb, U16 event)
 {
     pTMR_CB  cur;
 

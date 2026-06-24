@@ -300,7 +300,7 @@ STATUS get_local_mac(U8 *mac, char *sif)
        return ERROR;
     }
     
-    strncpy(sifreq.ifr_name, sif, IF_NAMESIZE-1);
+    strncpy(sifreq.ifr_name, sif, IFNAMSIZ-1);
     if (ioctl(fd, SIOCGIFHWADDR, &sifreq) != 0){
         printf("error! ioctl failed when getting mac\n");
         close(fd);
@@ -332,7 +332,7 @@ STATUS get_local_ip(char *ip_str, char *sif)
         return ERROR;
     }
     
-    strncpy(ifr.ifr_name, sif, IF_NAMESIZE-1);    
+    strncpy(ifr.ifr_name, sif, IFNAMSIZ-1);    
     if (ioctl(fd, SIOCGIFADDR, &ifr) < 0) {
         perror("ioctl SIOCGIFADDR error");
         close(fd);
@@ -373,7 +373,7 @@ STATUS set_local_ip(char *ip_str, char *sif)
     bzero(&mask,sizeof(mask));  
  
     //sprintf(ifr.ifr_name, sif); 
-    strncpy(ifr.ifr_name, sif, IF_NAMESIZE-1);  
+    strncpy(ifr.ifr_name, sif, IFNAMSIZ-1);  
     addr.sin_family = AF_INET; 
     addr.sin_addr.s_addr = inet_addr(ip_str); 
     //printf("addr.sin_addr.s_addr=%x\n",addr.sin_addr.s_addr); 
